@@ -1,0 +1,119 @@
+\documentclass[aspectratio=169, 12pt]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{palettechum}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{logovdr}
+
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{datavisualization}
+
+\usetheme[progressbar=foot]{metropolis}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Exemples de logos}
+\author{Nicolas Blais St-Laurent}
+
+
+\tikzset{hex/.style={
+	draw,
+	regular polygon, 
+	regular polygon sides=6, 
+	shape border rotate=30, 
+	align=center,
+	line width=0.2mm
+}}
+
+\providecommand{\logofvdr}{%
+	\begin{tikzpicture}
+		\node [hex] {\normalsize Formation\\[1.5mm]\LARGE{VDR-4}};
+	\end{tikzpicture}
+}
+
+\providecommand{\logofvdrdeux}{%
+	\begin{tikzpicture}
+		\node [hex]{% 
+			\normalsize Formation\\[0.4em]
+			\begin{tikzpicture}
+				\draw [domain=0:10.5, scale=0.15] plot [samples=400](\x, {sin(2 * \x r) + sin(14 * \x r)}) ;
+			\end{tikzpicture}\\[0.3em]
+			\Large{VDR-4}};
+	\end{tikzpicture}
+}
+
+\providecommand{\logofvdrtrois}{%
+	\begin{tikzpicture}
+
+		%\node [hex]{};
+		%\node {\normalsize Formation};
+		%\node {\Large{VDR-4}};
+
+		\begin{axis}[
+					enlargelimits=false,
+					axis lines=none,
+					height=1cm,
+					width=2cm,
+					scale only axis,
+					anchor=outer south west
+		]
+
+		\addplot [mark=none] table {f200.dat};
+
+		\end{axis}
+
+	\end{tikzpicture}
+}
+
+\begin{document}
+
+\begin{frame}{Logo VDR-4 simple}
+	\centering
+	\logofvdr
+	\logofvdrdeux
+\end{frame}
+
+\begin{frame}
+	\centering
+	\resizebox{!}{4cm}{%
+	\begin{tikzpicture}[
+			every node/.style={transform shape}
+			]
+
+		\node [
+			hex, 
+			minimum size=3.7cm, 
+			thick
+		]{};
+		\node at (0, 1cm) {\normalsize \bf Formation};
+		\node  at (0, -1cm) {\Large \bf{VDR-4}};
+
+		\begin{axis}[
+					axis lines=none,
+					height=1cm,
+					width=2.5cm,
+					scale only axis,
+					anchor=center,
+					enlargelimits=0.02
+		]
+
+			\addplot [mark=none, thick, line join=round] table [y=Pao, restrict x to domain=.5:5.3] {f200.dat};
+
+		\end{axis}
+
+	\end{tikzpicture}}
+	\logovdc{4cm}
+\end{frame}
+
+\begin{frame}
+	\centering
+
+	\begin{minipage}{\textwidth}
+		\tt
+	Ventilation\\
+	Diffusive\\
+	Convective
+	\end{minipage}
+\end{frame}
+\end{document}
