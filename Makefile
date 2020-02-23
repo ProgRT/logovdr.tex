@@ -1,7 +1,7 @@
 .PHONY: clean install
 
-logofvc.pdf: logofvc.tex logovdr2.sty
-	pdflatex logofvc
+test.pdf: test.tex logovdr.sty
+	pdflatex test
 
 logofvc.svg: logofvc.pdf
 	pdf2svg logofvc.pdf logofvc.svg

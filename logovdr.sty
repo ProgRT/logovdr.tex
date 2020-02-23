@@ -2,80 +2,72 @@
 \ProvidesPackage{logovdr}[2019/09/07 Logo pour ma formation sur le VDR-4]
 
 \RequirePackage{tikz}
+\RequirePackage{palettechum}
 
+\usetikzlibrary{backgrounds}
 \usetikzlibrary{shapes.geometric}
 
-\def\logofvc#1{%
-	\resizebox{!}{#1}{%
-		\begin{tikzpicture}[
-				vdrplot/.style={
-					xshift=-7.5mm,
-					yshift=-3mm,
-					xscale=0.05,
-					yscale=.15,
-					},
-				hexagon/.style={
-					draw,
-					regular polygon,
-					regular polygon sides=6,
-					minimum size=2.4cm,
-					rotate=30
-					},
-				every node/.style={
-					font=\fontfamily{\sfdefault}\fontsize{9}{10}\selectfont
-					}
-						]
-
-						%\draw [black!20] (-1,-1) grid [step=0.5](1,1);
-
-						\node [hexagon] {};
-						\node [yshift=4.8mm] {Formation};
-						\node [yshift=-5.9mm] {VDR-4};
-						\draw [vdrplot] plot [smooth, tension=1] coordinates {
-							(0,0) 
-							(1,0.7) (2,0) (3,0.9) (4,0) (5,1) (6,0) (7,1) (8,0) (9,1) (10,0)
-							(11,2.5) (12,0) (13,2.85) (14,0) (15,3) (16,0) (17,3) (18,0) (19,3) (20,0) 
-							(21,1.5) (22,0) (23,1.2) (24,0) (25,1) (26,0) (27,1) (28,0) (29,1) (30,0)
-							};
-
-		\end{tikzpicture}%
-	}
+\tikzset{
+	vdrplot/.style={
+		xscale=0.05,
+		yscale=.15,
+		line width=0.6pt
+	},
+	vdrhexagon/.style={
+		line width=1pt,
+		draw,
+		rounded corners=1.5,
+		regular polygon,
+		regular polygon sides=6,
+		minimum size=2.4cm,
+		rotate=30
+	},
+	vdrwave/.pic={
+		\draw [vdrplot] plot [smooth, tension=1] coordinates {
+			(0,0) 
+			(1,0.7) (2,0) (3,0.9) (4,0) (5,1) (6,0) (7,1) (8,0) (9,1) (10,0)
+			(11,2.5) (12,0) (13,2.85) (14,0) (15,3) (16,0) (17,3) (18,0) (19,3) (20,0) 
+			(21,1.5) (22,0) (23,1.2) (24,0) (25,1) (26,0) (27,1) (28,0) (29,1) (30,0)
+			};
+	},
+	logofvdrnode/.style={
+		font=\fontfamily{\sfdefault}\fontsize{9}{10}\bfseries\selectfont,
+	},
 }
 
-\def\logovdc#1{%
-	\resizebox{!}{#1}{%
-		\begin{tikzpicture}[
-				vdrplot/.style={
-					xshift=-7.5mm,
-					yshift=4mm,
-					xscale=0.05,
-					yscale=.15,
-					},
-				hexagon/.style={
-					draw,
-					regular polygon,
-					regular polygon sides=6,
-					minimum size=2.3cm,
-					rotate=30
-					},
-				every node/.style={
-					font=\fontfamily{\ttdefault}\fontsize{8}{10}\selectfont
-					}
-						]
-
-						%\draw [black!20] (-1,-1) grid [step=0.5](1,1);
-
-						\node [hexagon] {};
-						\node [rotate=0, scale=1] at (90:0mm) {Ventilation};
-						\node [rotate=0, scale=0.9] at (-120:5.5mm) {Diffusive};
-						\node [rotate=30, scale=0.80] at (-60:8.5mm) {Convective};
-						\draw [vdrplot] plot [smooth, tension=1] coordinates {
-							(0,0) 
-							(1,0.7) (2,0) (3,0.9) (4,0) (5,1) (6,0) (7,1) (8,0) (9,1) (10,0)
-							(11,2.5) (12,0) (13,2.85) (14,0) (15,3) (16,0) (17,3) (18,0) (19,3) (20,0) 
-							(21,1.5) (22,0) (23,1.2) (24,0) (25,1) (26,0) (27,1) (28,0) (29,1) (30,0)
-							};
-
-		\end{tikzpicture}%
-	}
+\pgfkeys{
+/logofvdr/.cd,
+fill/.style={/tikz/vdrhexagon/.append style={fill=#1}},
+fg/.style={
+	/tikz/vdrhexagon/.append style={draw=#1},
+	/tikz/logofvdrnode/.append style={#1},
+	/tikz/vdrplot/.append style={draw=#1},
+	},
+height/.store in=\logofvdrheight,
+width/.store in=\logofvdrwidth,
 }
+
+\def\drawlogofvdr{%
+\begin{tikzpicture}[]%
+		\node [vdrhexagon] {};
+		\node [yshift=4.8mm, logofvdrnode] {Formation};
+		\node [yshift=-5.9mm, logofvdrnode] {VDR-4};
+		\pic [ xshift=-7.5mm, yshift=-3mm]{vdrwave};
+	\end{tikzpicture}%
+}
+
+\providecommand{\logofvdr}[1][]{%
+	\def\logofvdrwidth{2.5cm}%
+	\pgfkeys{
+		/logofvdr/.cd, 
+		fill=none,
+		fg=black,
+		}%
+	\pgfkeys{/logofvdr/.cd, #1}%
+	\@ifundefined{logofvdrheight}{%
+\resizebox{\logofvdrwidth}{!}{\drawlogofvdr}%
+	}{%
+\resizebox{!}{\logofvdrheight}{\drawlogofvdr}%
+	}%
+}
+
