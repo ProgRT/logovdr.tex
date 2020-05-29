@@ -11,10 +11,10 @@
 	vdrplot/.style={
 		xscale=0.05,
 		yscale=.15,
-		line width=0.6pt
+	%	line width=0.6pt
 	},
 	vdrhexagon/.style={
-		line width=1pt,
+	%	line width=1pt,
 		draw,
 		rounded corners=1.5,
 		regular polygon,
@@ -31,13 +31,17 @@
 			};
 	},
 	logofvdrnode/.style={
-		font=\fontfamily{\sfdefault}\fontsize{9}{10}\bfseries\selectfont,
+		font=\fontfamily{\sfdefault}\fontsize{8}{6}\bfseries\selectfont,
 	},
 }
 
 \pgfkeys{
 /logofvdr/.cd,
 fill/.style={/tikz/vdrhexagon/.append style={fill=#1}},
+thin/.style={
+	/tikz/vdrhexagon/.append style={thin},
+	/tikz/vdrplot/.append style={thin},
+	},
 fg/.style={
 	/tikz/vdrhexagon/.append style={draw=#1},
 	/tikz/logofvdrnode/.append style={#1},
